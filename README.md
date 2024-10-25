@@ -60,7 +60,7 @@ To test the module during development in another project, you can pack and share
    ```
    docker volume create nuxt-module-package
    ```
-2. Add this module as mount in your `.devcontainer/.devcontainer.json` like:
+2. Add this module as mount in your `.devcontainer/devcontainer.json` like:
    ```
    {
      // ...
