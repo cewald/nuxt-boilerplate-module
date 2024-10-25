@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SbComponentNavigationItemInternal as PropTypes } from '~/modules/storyblok/stores/components'
+import type { SbComponentNavigationItemInternal as PropTypes } from '~/src/runtime/storyblok/stores/components'
 
 defineProps<PropTypes>()
 </script>

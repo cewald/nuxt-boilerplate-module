@@ -36,7 +36,7 @@ export default defineNuxtModule<ModuleOptions>({
     ]
 
     for (const { name, as } of sbImports) {
-      addImports({ name, as: 'Sb' + as, from: '@storyblok/js' })
+      addImports({ name, as: 'Sb' + as, from: 'storyblok-js-client' })
     }
 
     addImportsDir([ 'composables', 'stores' ].map(name => resolve('./runtime/storyblok/' + name)))

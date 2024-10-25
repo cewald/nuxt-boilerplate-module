@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import type { SbComponentNavigationItemExternal as PropTypes } from '~/modules/storyblok/stores/components'
+import type { SbComponentNavigationItemMailTo as PropTypes } from '~/src/runtime/storyblok/stores/components'
 
 defineProps<PropTypes>()
 </script>
 
 <template>
   <a
-    :href="path"
+    :href="`mailto:${email}`"
     :aria-label="title"
     target="_blank"
-    v-bind="$attrs"
   >
     <slot>{{ title }}</slot>
   </a>

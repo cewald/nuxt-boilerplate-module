@@ -1,4 +1,6 @@
 import type { ISbRichtext, ISbNode } from 'storyblok-js-client'
+import { RichtextSchema, RichtextResolver } from 'storyblok-js-client'
+import { cloneDeep } from '~/src/runtime/shared/utils/cloneDeep'
 
 export type RteClasses = {
   italic?: string
@@ -13,7 +15,7 @@ export type RteClasses = {
 }
 
 export const useSbRichTextResolver = (classes: RteClasses = {}) => {
-  const schema = cloneDeep(SbRichTextSchema)
+  const schema = cloneDeep(RichtextSchema)
 
   classes = {
     italic: 'font-italic',
@@ -51,7 +53,7 @@ export const useSbRichTextResolver = (classes: RteClasses = {}) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (schema as any)[schemaKey][key] = (n: ISbNode) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const orgResolved = (SbRichTextSchema as any)[schemaKey][key](n)
+      const orgResolved = (RichtextSchema as any)[schemaKey][key](n)
 
       if (key === 'link') {
         const { linktype } = n.attrs
@@ -68,7 +70,7 @@ export const useSbRichTextResolver = (classes: RteClasses = {}) => {
     }
   }
 
-  const rteResolver = new SbRichTextResolver(schema)
+  const rteResolver = new RichtextResolver(schema)
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const render = (data?: ISbRichtext, options?: any) => {
