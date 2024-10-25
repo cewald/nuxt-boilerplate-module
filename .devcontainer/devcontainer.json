@@ -1,0 +1,36 @@
+{
+  "name": "@cewald/nuxt-boilerplate",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/jckimble/devcontainer-features/ngrok:3": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bradlc.vscode-tailwindcss",
+        "csstools.postcss",
+        "dbaeumer.vscode-eslint",
+        "vue.volar",
+        "wix.vscode-import-cost"
+      ]
+    }
+  },
+  "postCreateCommand": "npm i && npx nuxi prepare",
+  "forwardPorts": [
+    3000,
+    3001
+  ],
+  "portsAttributes": {
+    "3000": {
+      "label": "vue-dev",
+      "protocol": "https",
+      "elevateIfNeeded": false
+    },
+    "3001": {
+      "label": "vue-preview",
+      "protocol": "https",
+      "elevateIfNeeded": false
+    }
+  }
+}
