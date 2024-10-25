@@ -59,7 +59,6 @@ To test this module during development in another project, you can mount the pro
 1. Add the module-folder as bind-mount in your target `.devcontainer/devcontainer.json` like:
    ```json
    {
-     // ...
      "mounts": [
        "source=/Users/your-name/nuxt-boilerblate-module,target=/workspaces/nuxt-boilerblate-module,type=bind"
      ]
