@@ -21,6 +21,9 @@
     3000,
     3001
   ],
+  "mounts": [
+    "source=cewald-nuxt-boilerplate-package,target=/workspace/shared-folder,type=volume"
+  ],
   "portsAttributes": {
     "3000": {
       "label": "vue-dev",
