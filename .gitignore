@@ -15,7 +15,6 @@ node_modules
 
 # Generated dirs
 dist
-shared
 
 # Nuxt
 .nuxt

@@ -1,9 +1,9 @@
-import { defineNuxtModule, addPlugin, createResolver } from '@nuxt/kit'
+import { defineNuxtModule, addImports, createResolver, addImportsDir, addComponentsDir } from '@nuxt/kit'
 
-// Module options TypeScript interface definition
 export interface ModuleOptions {
-  storyblok?: {
-    apiKey: string
+  storyblok: {
+    apiKey?: string
+    region?: 'eu' | 'us' | 'ca' | 'cn' | 'ap'
   }
 }
 
@@ -15,9 +15,40 @@ export default defineNuxtModule<ModuleOptions>({
       nuxt: '>=3.0.0',
     },
   },
-  defaults: {},
-  setup(_options, _nuxt) {
-    const resolver = createResolver(import.meta.url)
-    addPlugin(resolver.resolve('./runtime/plugin'))
+  defaults: {
+    storyblok: {
+      region: 'eu',
+    },
+  },
+  setup(options, _nuxt) {
+    const { resolve } = createResolver(import.meta.url)
+
+    /*
+    * Add /storyblok setup
+    */
+    if (!options.storyblok.apiKey) {
+      throw new Error('The "storyblok.apiUrl" option is required in @cewald/nuxt-boilerplate module configuration.')
+    }
+
+    const sbImports = [
+      { name: 'RichtextResolver', as: 'RichTextResolver' },
+      { name: 'RichtextSchema', as: 'RichTextSchema' },
+    ]
+
+    for (const { name, as } of sbImports) {
+      addImports({ name, as: 'Sb' + as, from: '@storyblok/js' })
+    }
+
+    addImportsDir([ 'composables', 'stores' ].map(name => resolve('./runtime/storyblok/' + name)))
+
+    addComponentsDir({
+      path: resolve('./runtime/storyblok/components'),
+      prefix: 'Storyblok',
+    })
+
+    /*
+    * Add /shared setup
+    */
+    addImportsDir(resolve('./runtime/shared/utils'))
   },
 })
