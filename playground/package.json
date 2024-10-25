@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "my-module-playground",
+  "name": "@cewald/nuxt-boilerplate-playground",
   "type": "module",
   "scripts": {
     "dev": "nuxi dev",
