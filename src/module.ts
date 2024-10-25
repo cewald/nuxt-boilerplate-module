@@ -1,9 +1,14 @@
 import { defineNuxtModule, addImports, createResolver, addImportsDir, addComponentsDir } from '@nuxt/kit'
+import type { Config } from 'tailwindcss'
+import resolveConfig from 'tailwindcss/resolveConfig'
 
 export interface ModuleOptions {
-  storyblok: {
+  storyblok?: {
     apiKey?: string
     region?: 'eu' | 'us' | 'ca' | 'cn' | 'ap'
+  }
+  tailwindcss?: {
+    configFile: string
   }
 }
 
@@ -19,14 +24,17 @@ export default defineNuxtModule<ModuleOptions>({
     storyblok: {
       region: 'eu',
     },
+    tailwindcss: {
+      configFile: 'tailwind.config.js',
+    },
   },
-  setup(options, _nuxt) {
+  async setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
 
     /*
-    * Add /storyblok setup
-    */
-    if (!options.storyblok.apiKey) {
+     * Add /storyblok setup
+     */
+    if (!options.storyblok?.apiKey) {
       throw new Error('The "storyblok.apiUrl" option is required in @cewald/nuxt-boilerplate module configuration.')
     }
 
@@ -47,8 +55,32 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     /*
-    * Add /shared setup
-    */
+     * Add /shared setup
+     */
     addImportsDir(resolve('./runtime/shared/utils'))
+
+    /**
+     * Add /tailwindcss setup
+     */
+
+    /**
+     * Export tailwind configs to appConfig to be able to read TailwindCSS variables as screen sizes
+     * inside javascript and Vue without importing the whole TailwindCSS config object and deps.
+     * @see https://tailwindcss.com/docs/configuration#referencing-in-javascript
+     */
+    const twConfigPath = resolve(nuxt.options.rootDir, options.tailwindcss?.configFile as string)
+    const twConfig: Config = await import(twConfigPath)
+      .then(m => m.default).catch(() => {
+        throw new Error(`Cannot read TailwindCSS config file at "${twConfigPath}".`)
+      })
+    const fullConfig = resolveConfig(twConfig)
+    const twScreens = { screens: fullConfig.theme.screens }
+    Object.assign(nuxt.options.appConfig, twScreens)
+
+    addImports({
+      name: 'default',
+      as: 'useScreens',
+      from: resolve('./runtime/tailwindcss/composables/useScreens'),
+    })
   },
 })
