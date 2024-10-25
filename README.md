@@ -52,32 +52,23 @@ npm run test:watch
 npm run release
 ```
 
-### Mount folder into devcontainer
+### Mount folder into a devcontainer and install package during development
 
-To test the module during development in another project, you can pack and share the `/dist` folder with another container.
+To test this module during development in another project, you can mount the project folder into the target devcontainer.
 
-1. Create a volume in your via docker:
-   ```
-   docker volume create nuxt-module-package
-   ```
-2. Add this module as mount in your `.devcontainer/devcontainer.json` like:
-   ```
+1. Add the module-folder as bind-mount in your target `.devcontainer/devcontainer.json` like:
+   ```json
    {
      // ...
-     "runArgs": [
-       "-v", "nuxt-module-package:/workspaces/nuxt-boilerblate-module/dist"
-     ],
+     "mounts": [
+       "source=/Users/your-name/nuxt-boilerblate-module,target=/workspaces/nuxt-boilerblate-module,type=bind"
+     ]
    }
    ```
-3. Now you can pack it using `npm pack` or just `npm run build`
-4. After that mount that volumne to your target devcontainer like:
-   ```
-   {
-     // ...
-     "runArgs": [
-       "-v", "nuxt-module-package:/workspaces/nuxt-module-package"
-     ],
-   }
+1. Pack the module using `npm run build` or `npm run dev` during development.
+1. Now you can install the package in your target like:
+   ```shell
+   npm i -D /workspaces/nuxt-boilerblate-module
    ```
 
 <!-- Badges -->
