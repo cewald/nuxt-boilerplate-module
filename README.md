@@ -82,3 +82,8 @@ That's it! You can now use My Module in your Nuxt app ✨
 
 [nuxt-src]: https://img.shields.io/badge/Nuxt-020420?logo=nuxt.js
 [nuxt-href]: https://nuxt.com
+
+
+## License
+
+This project is licensed under the [GNU General Public License v3.0](LICENSE).
